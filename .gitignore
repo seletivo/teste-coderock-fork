@@ -1,0 +1,6 @@
+.idea/
+.phpintel/*
+.vscode/
+.phpintel/
+.idea/*
+vendor/*
