@@ -2,9 +2,11 @@
 
 namespace Entity;
 
-use Entity\EntityValidar;
+use Entity\ValidateEntity;
 
 use Doctrine\ORM\Mapping as ORM;
+
+use Helper\ValidateEntityException;
 
 use JMS\Serializer\SerializerBuilder;
 use JMS\Serializer\Annotation as Serializer;
@@ -14,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 /** 
  * @ORM\MappedSuperclass 
  */
-abstract class AbstractEntity extends EntityValidar {
+abstract class AbstractEntity extends ValidateEntity {
     /**
      * @ORM\Id()
      * @ORM\GeneratedValue()
@@ -23,8 +25,8 @@ abstract class AbstractEntity extends EntityValidar {
      */
     private $id;                   
 
-    public function __construct($classe) {
-        parent::__construct($classe);
+    public function __construct($className) {
+        parent::__construct($className);
     }
 
     /**
@@ -33,5 +35,9 @@ abstract class AbstractEntity extends EntityValidar {
     public function getId()
     {
         return $this->id;
-    }            
+    }   
+    
+    public function initializeErrorMessage() {           
+        $this->addErrorMessage(ValidateEntityException::class, 'Campo [<field_name>] obrigatório!');                
+    }
 }
